@@ -1,6 +1,5 @@
 package ru.zneik.restaurant.to;
 
-import ru.zneik.restaurant.HasIdAndEmail;
 import ru.zneik.restaurant.to.base.BaseTo;
 
 import javax.validation.constraints.Email;
@@ -8,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-public class UserTo extends BaseTo implements HasIdAndEmail, Serializable {
+public class UserTo extends BaseTo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotBlank
@@ -50,7 +49,6 @@ public class UserTo extends BaseTo implements HasIdAndEmail, Serializable {
         this.name = name;
     }
 
-    @Override
     public String getEmail() {
         return email;
     }

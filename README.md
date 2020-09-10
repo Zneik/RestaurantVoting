@@ -20,7 +20,7 @@ Each restaurant provides new menu each day.
 #### For regular user
 #### User
 ##### Get current user info
-`curl http://localhost:8080/rest/users --user user@yandex.ru:password`
+`curl http://localhost:8080/rest/profile --user user@yandex.ru:password`
 ##### Register new user
 `curl -H "Content-Type:application/json" -X POST -d "{\"name\":\"UserNew\",\"email\":\"user_new@yandex.ru\",\"password\":\"newPass123\"}" http://localhost:8080/rest/users/register`
 

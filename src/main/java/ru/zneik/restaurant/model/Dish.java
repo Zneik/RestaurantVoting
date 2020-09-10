@@ -7,13 +7,12 @@ import ru.zneik.restaurant.model.base.AbstractNamedEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "dishes", uniqueConstraints = {
-        @UniqueConstraint(name = "dishes_unique_name_date_restaurant_idx", columnNames = {
-                "name", "date", "restaurant_id"
+        @UniqueConstraint(name = "dishes_unique_restaurant_name_date_idx", columnNames = {
+                "restaurant_id", "name", "date"
         })
 })
 public class Dish extends AbstractNamedEntity {

@@ -1,6 +1,7 @@
 package ru.zneik.restaurant.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,8 +17,6 @@ import java.util.Optional;
 public interface VoteRepository extends JpaRepository<Vote, Integer> {
     Optional<Vote> getByUserIdAndDate(int userId, LocalDate date);
 
-    Optional<Vote> getByUserIdAndRestaurantIdAndDate(int userId, int restaurantId, LocalDate date);
-
     List<Vote> getByUserIdOrderByDateDesc(@Param("userId") int userId);
 
     List<Vote> getByDate(LocalDate date);
@@ -25,4 +24,6 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
     @Query("SELECT v FROM Vote v WHERE v.date>=:startDate and v.date<=:endDate ORDER BY v.date DESC")
     List<Vote> getBetween(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
+    @Modifying
+    long deleteByRestaurantIdAndUserIdAndAndDate(int restaurantId, int userId, LocalDate date);
 }

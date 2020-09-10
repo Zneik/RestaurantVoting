@@ -43,7 +43,7 @@ CREATE TABLE dishes
     restaurant_id INTEGER            NOT NULL,
     CONSTRAINT dishes_restaurant_fk FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX dishes_unique_name_date_restaurant_idx ON dishes (name, date, restaurant_id);
+CREATE UNIQUE INDEX dishes_unique_restaurant_name_date_idx ON dishes (restaurant_id, name, date);
 
 CREATE TABLE votes
 (

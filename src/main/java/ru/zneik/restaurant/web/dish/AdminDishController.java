@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.zneik.restaurant.model.Dish;
 import ru.zneik.restaurant.service.DishService;
+import ru.zneik.restaurant.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -37,6 +38,7 @@ public class AdminDishController {
 
     @PostMapping("/restaurants/{restaurantId}/dishes")
     public ResponseEntity<Dish> create(@PathVariable int restaurantId, @Valid @RequestBody Dish dish) {
+        ValidationUtil.checkNew(dish);
         Dish createdDish = dishService.create(dish, restaurantId);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/rest/admin/dishes/{id}")
@@ -50,6 +52,7 @@ public class AdminDishController {
     public Dish update(@PathVariable int restaurantId,
                        @PathVariable int dishId,
                        @Valid @RequestBody Dish dish) {
+        ValidationUtil.assureIdConsistent(dish, dishId);
         return dishService.update(dish, restaurantId, dishId);
     }
 

@@ -22,7 +22,7 @@ class UserControllerTest extends AbstractControllerTest {
 
     @Test
     void getCurrent() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL)
+        perform(MockMvcRequestBuilders.get(REST_URL + "/profile")
                 .with(userHttpBasic(USER_1)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -33,7 +33,7 @@ class UserControllerTest extends AbstractControllerTest {
     @Test
     void register() throws Exception {
         User expectedCreated = UserTestData.getNewUser();
-        ResultActions resultActions = perform(MockMvcRequestBuilders.post(REST_URL + "/register")
+        ResultActions resultActions = perform(MockMvcRequestBuilders.post(REST_URL + "/users/register")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(JsonUtil.writeValue(UserUtil.asTo(expectedCreated))))
                 .andDo(print())
@@ -48,7 +48,7 @@ class UserControllerTest extends AbstractControllerTest {
         User expectedCreated = UserTestData.getNewUser();
         expectedCreated.setEmail("");
         expectedCreated.setPassword("");
-        perform(MockMvcRequestBuilders.post(REST_URL + "/register")
+        perform(MockMvcRequestBuilders.post(REST_URL + "/users/register")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(JsonUtil.writeValue(UserUtil.asTo(expectedCreated))))
                 .andDo(print())

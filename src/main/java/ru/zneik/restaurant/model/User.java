@@ -5,7 +5,6 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.util.CollectionUtils;
-import ru.zneik.restaurant.HasIdAndEmail;
 import ru.zneik.restaurant.model.base.AbstractNamedEntity;
 
 import javax.persistence.*;
@@ -18,10 +17,9 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
-public class User extends AbstractNamedEntity implements HasIdAndEmail {
+public class User extends AbstractNamedEntity {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -84,7 +82,6 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail {
         setRoles(roles);
     }
 
-    @Override
     public String getEmail() {
         return email;
     }

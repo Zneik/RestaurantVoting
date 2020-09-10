@@ -20,7 +20,7 @@ import static ru.zneik.restaurant.web.user.UserController.REST_URL;
 @RestController
 @RequestMapping(value = REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
-    public final static String REST_URL = "/rest/users";
+    public final static String REST_URL = "/rest";
 
     private final UserService userService;
 
@@ -28,12 +28,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/profile")
     public User getCurrent(@AuthenticationPrincipal AuthorizedUser user) {
         return userService.get(user.getId());
     }
 
-    @PostMapping("/register")
+    @PostMapping("/users/register")
     public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
         User createdUser = userService.create(UserUtil.createNewFromTo(userTo));
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()

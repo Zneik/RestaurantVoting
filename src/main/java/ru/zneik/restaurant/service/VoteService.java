@@ -1,5 +1,6 @@
 package ru.zneik.restaurant.service;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.zneik.restaurant.model.Vote;
 import ru.zneik.restaurant.repository.VoteRepository;
@@ -26,6 +27,11 @@ public class VoteService {
         this.restaurantService = restaurantService;
     }
 
+    public Vote getByUserIdAndDate(int userId, LocalDate todayDate) {
+        return voteRepository.getByUserIdAndDate(userId, todayDate)
+                .orElseThrow(() -> new NotFoundException("Not found vote"));
+    }
+
     @Transactional
     public void create(int restaurantId, int userId, LocalDateTime dateTime) {
         LocalDate todayDate = LocalDate.now();
@@ -35,11 +41,6 @@ public class VoteService {
         restaurantService.getByIdAndDate(restaurantId, todayDate);
         Vote vote = new Vote(null, userId, restaurantId, dateTime.toLocalDate());
         voteRepository.save(vote);
-    }
-
-    public Vote getByUserIdAndDate(int userId, LocalDate todayDate) {
-        return voteRepository.getByUserIdAndDate(userId, todayDate)
-                .orElseThrow(() -> new NotFoundException("Not found vote"));
     }
 
     @Transactional
@@ -54,9 +55,13 @@ public class VoteService {
     @Transactional
     public void delete(int restaurantId, int userId, LocalDateTime dateTime) {
         checkTime(dateTime);
-        Vote vote = voteRepository.getByUserIdAndRestaurantIdAndDate(userId, restaurantId, dateTime.toLocalDate())
-                .orElseThrow(() -> new ExistVoteException("User not vote today"));
-        voteRepository.deleteById(vote.getId());
+        long countDeleted = voteRepository.deleteByRestaurantIdAndUserIdAndAndDate(restaurantId,
+                userId,
+                dateTime.toLocalDate());
+        LoggerFactory.getLogger(VoteService.class).info(String.valueOf(countDeleted));
+        if (countDeleted == 0) {
+            throw new ExistVoteException("User not vote today");
+        }
     }
 
     private void checkTime(LocalDateTime dateTime) {
